@@ -1,0 +1,46 @@
+<meta charset="utf8" />
+<html>
+<script src='../dist/sql-wasm-debug.js'></script>
+<script>
+  config = {
+    locateFile: (filename, prefix) => {
+      console.log(`prefix is : ${prefix}`);
+      return `../dist/${filename}`;
+    }
+  }
+  // The `initSqlJs` function is globally provided by all of the main dist files if loaded in the browser.
+  // We must specify this locateFile function if we are loading a wasm file from anywhere other than the current html page's folder.
+  initSqlJs(config).then(function (SQL) {
+    //Create the database
+    var db = new SQL.Database();
+
+    // Run a query without reading the results
+    db.run("CREATE TABLE test (data json);");
+
+    var version = db.exec("SELECT sqlite_version();");
+    console.log('version: ' + JSON.stringify(version));
+
+    var option = db.exec("PRAGMA compile_options;;");
+    console.log('compile_options: ' + JSON.stringify(option));
+
+    // Insert some samples
+    for (i = 1; i <= 10; i++){
+      var jsonObj = {"name": "test"+i.toString(), "age": i };
+      console.log('jsonObj: ' + JSON.stringify(jsonObj));
+      var query = "insert into test(data) values('" + JSON.stringify(jsonObj) + "')";
+      db.exec(query);
+    }
+
+    var retval = "SELECT * FROM test WHERE json_extract(data,\"$.age\")==5";
+    console.log('select age = 5: ', JSON.stringify(db.exec(retval)));
+
+    select = "select * from test";
+    console.log("select all: ", JSON.stringify(db.exec(select)));
+  });
+</script>
+
+<body>
+  Output is in Javscript console
+</body>
+
+</html>
