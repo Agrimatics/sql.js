@@ -23,6 +23,10 @@ CFLAGS = \
 	-DSQLITE_DISABLE_LFS \
 	-DSQLITE_ENABLE_FTS3 \
 	-DSQLITE_ENABLE_JSON1 \
+	-DSQLITE_OMIT_LOAD_EXTENSION \
+	-DSQLITE_ENABLE_RTREE \
+	-DSQLITE_ENABLE_FTS4 \
+	-DSQLITE_ENABLE_FTS5 \
 	-DSQLITE_ENABLE_FTS3_PARENTHESIS \
 	-DSQLITE_THREADSAFE=0
 
@@ -153,7 +157,7 @@ out/api.js: src/output-pre.js src/api.coffee src/exports.coffee src/api-data.cof
 out/sqlite3.bc: sqlite-src/$(SQLITE_AMALGAMATION)
 	mkdir -p out
 	# Generate llvm bitcode
-	$(EMCC) $(CFLAGS) sqlite-src/$(SQLITE_AMALGAMATION)/sqlite3.c -ldl -lreadline -lncurses -o $@
+	$(EMCC) $(CFLAGS) sqlite-src/$(SQLITE_AMALGAMATION)/sqlite3.c -o $@
 
 out/extension-functions.bc: sqlite-src/$(SQLITE_AMALGAMATION)/$(EXTENSION_FUNCTIONS)
 	mkdir -p out
