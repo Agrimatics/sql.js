@@ -73,6 +73,9 @@ initSqlJs().then(SQL => {
 
 ```
 
+## Json1 support
+See the demo in [jsontest.html](https://github.com/Agrimatics/sql.js/blob/master/examples/jsontest.html)
+
 ## Demo
 There are a few examples [available here](https://kripken.github.io/sql.js/index.html). The most full-featured is the [Sqlite Interpreter](https://kripken.github.io/sql.js/examples/GUI/index.html).
 
